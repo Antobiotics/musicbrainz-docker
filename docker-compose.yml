@@ -3,6 +3,8 @@ postgresqldata:
   restart: always
   volumes:
    - /datadump:/media/dbdump:rw
+  environment:
+   - constaint:role==storage
 
 postgresql:
   build: postgres-dockerfile
@@ -13,6 +15,8 @@ postgresql:
    - /mnt/pgdata/pgdata:/var/lib/postgresql/data
   expose:
    - "5432"
+  environment:
+   - constaint:role==storage
 
 musicbrainz:
   build: musicbrainz-dockerfile
@@ -28,6 +32,8 @@ musicbrainz:
   links:
    - postgresql:db
    - search:search
+  environment:
+   - constaint:role==musicbrainz
 
 indexer:
   build: indexer-dockerfile
@@ -35,6 +41,8 @@ indexer:
    - postgresql:db
   volumes:
    - /mnt/data:/home/search/data
+  environment:
+   - constaint:role==storage
 
 search:
   build: search-dockerfile
@@ -42,3 +50,5 @@ search:
    - "8080"
   volumes:
    - /mnt/data:/home/search/data
+  environment:
+   - constaint:role==storage
