@@ -34,6 +34,6 @@
             "root-size": 500,
             "priority": 100,
             "num_instances": 1
-        },
+        }
     ]
 }
