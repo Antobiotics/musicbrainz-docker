@@ -52,6 +52,8 @@ RUN cpanm --notest SARTAK/MooseX-Role-Parameterized-0.27.tar.gz \
     Server::Starter \
     TURNSTEP/DBD-Pg-3.4.2.tar.gz
 
+
+ENV DEVELOPMENT_SERVER 1
 RUN cd /musicbrainz-server/ && npm i && ./node_modules/.bin/gulp
 
 ADD DBDefs.pm /musicbrainz-server/lib/
