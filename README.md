@@ -1,13 +1,19 @@
-musicbrainz docker container
+musicbrainz slave server with search and replication
 ==================
 
-This repo contains everything needed to run a musicbrainz slave server with replication in a docker container.
+[![Build Status](https://travis-ci.org/jsturgis/musicbrainz-docker.svg?branch=master)](https://travis-ci.org/jsturgis/musicbrainz-docker)
+
+This repo contains everything needed to run a musicbrainz slave server with search and replication in docker.
 You will need a little over 20 gigs of free space to run this with replication.
+
+### Versions
+* Current MB Branch: [v-2016-05-23-schema-change-v2](musicbrainz-dockerfile/Dockerfile#L22)
+* Current DB_SCHEMA_SEQUENCE: [23](musicbrainz-dockerfile/DBDefs.pm#L95)
+* Postgres Version: [9.5](postgres-dockerfile/Dockerfile#L1)
 
 ### Configuration
 * Set the path where you want to store the downloaded data dumps in [docker-compose.yml](./docker-compose.yml).
 * If you already have data dumps in this path they can be loaded instead of downloading new dumps, see [Create Database](#create-database).
-* Set REPLICATION_ACCESS_TOKEN in the [DBDefs.pm file](musicbrainz-dockerfile/DBDefs.pm#L117) to the token you got from musicbrainz (instructions for generating a token are [here](http://blog.musicbrainz.org/2015/05/19/schema-change-release-2015-05-18-including-upgrade-instructions/)).
 
 ### Installation
 
@@ -16,6 +22,8 @@ You will need a little over 20 gigs of free space to run this with replication.
 * `git clone this-repo`
 * `cd this-repo`
 * `sudo docker-compose up -d`
+* Set the token you got from musicbrainz (instructions for generating a token are [here](http://blog.musicbrainz.org/2015/05/19/schema-change-release-2015-05-18-including-upgrade-instructions/)).
+* `sudo docker exec musicbrainzdocker_musicbrainz_1 /set-token.sh <replication token>`
 
 ### Create database
 Create the database, download the latest dumps and populate the database
@@ -26,7 +34,12 @@ Create the database, and populate the database with existing dumps
 
 * `sudo docker-compose run --rm musicbrainz /createdb.sh`
 
-### Recreate database
+### Build search indexes
+In order to use the search functions of the web site/API you will need to build search indexes.
+
+* `sudo docker-compose run --rm indexer /home/search/index.sh`
+
+### If you need to recreate the database
 you will need to enter the postgres password that you set in [postgres.env](postgres-dockerfile/postgres.env).
 * `sudo docker-compose run --rm musicbrainz /recreatedb.sh`
 

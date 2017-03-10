@@ -30,10 +30,9 @@ RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 RUN git clone --recursive https://github.com/metabrainz/musicbrainz-server.git musicbrainz-server && \
     cd musicbrainz-server && \
-    git checkout v-2015-05-18-schema-change
+    git checkout v-2016-05-23-schema-change-v2
 
-RUN echo "eval $( perl -Mlocal::lib )" >> ~/.bashrc && . ~/.bashrc
-RUN curl -sL https://deb.nodesource.com/setup | sudo bash -
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 
 RUN apt-get install -y nodejs
 RUN cat /musicbrainz-server/Makefile.PL | grep ^requires > cpanfile
@@ -61,6 +60,7 @@ ADD scripts/crons.conf /crons.conf
 ADD scripts/replication.sh /replication.sh
 ADD scripts/createdb.sh /createdb.sh
 ADD scripts/recreatedb.sh /recreatedb.sh
+ADD scripts/set-token.sh /set-token.sh
 ADD 001-musicbrainz /etc/nginx/sites-available/001-musicbrainz
 
 RUN rm /etc/nginx/nginx.conf

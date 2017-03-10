@@ -92,7 +92,7 @@ MusicBrainz::Server::DatabaseConnectionFactory->register_databases(
 # replication_control.current_schema_sequence.
 # This is required, there is no default in order to prevent it changing without
 # manual intervention.
-sub DB_SCHEMA_SEQUENCE { 22 }
+sub DB_SCHEMA_SEQUENCE { 23 }
 
 # What type of server is this?
 # * RT_MASTER - This is a master replication server.  Changes are allowed, and
@@ -145,7 +145,7 @@ sub REPLICATION_ACCESS_TOKEN { "" }
 sub WEB_SERVER                { "localhost:5000" }
 # Relevant only if SSL redirects are enabled
 # sub WEB_SERVER_SSL            { "localhost" }
-# sub LUCENE_SERVER             { "search.musicbrainz.org" }
+sub LUCENE_SERVER             { "search:8080" }
 # Used, for example, to have emails sent from the beta server list the
 # main server
 # sub WEB_SERVER_USED_IN_EMAIL  { my $self = shift; $self->WEB_SERVER }
